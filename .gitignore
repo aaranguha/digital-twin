@@ -9,7 +9,7 @@ __pycache__/
 *.pyo
 
 #ChromaDB
-chroma_db/
+# chroma_db/  #Commented out for deployment (to include embeddings)
 
 #Node/Frontend
 node_modules/
