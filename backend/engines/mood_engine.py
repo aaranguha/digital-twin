@@ -1,7 +1,11 @@
 # Mood Engine analyzes calendar to determine availability + become "mood-aware"
 
 from datetime import datetime
+import pytz
 from integrations.google_calendar import get_todays_events, is_authenticated
+
+#Default timezone
+USER_TIMEZONE = pytz.timezone("America/New_York")
 
 class MoodEngine:
     """
@@ -55,7 +59,7 @@ class MoodEngine:
         """
 
         meeting_count = len(events)
-        current_hour = datetime.now().hour
+        current_hour = datetime.now(USER_TIMEZONE).hour  # Use user's timezone
 
         #Check if in meeting
         in_meeting = any(event.get("is_now", False) for event in events)
@@ -97,10 +101,10 @@ class MoodEngine:
         elif 12 <= current_hour < 14:
             energy = "medium"
             summary += " Post-lunch energy dip."
-        elif 14 <= current_hour < 17:
+        elif 14 <= current_hour < 16:
             energy = "medium"
             summary += " Afternoon work mode."
-        elif current_hour >= 17:
+        elif current_hour >= 16:
             availability = "winding_down"
             energy = "low"
             summary = "End of workday. Best to reach out tomorrow morning."
