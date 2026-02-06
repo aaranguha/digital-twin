@@ -3,6 +3,9 @@
 
 import { useState, useEffect } from 'react'
 
+// API URL - uses environment variable on Vercel, localhost for local dev
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+
 // TypeScript type for chat messages
 type Message = {
   role: 'user' | 'twin'
@@ -39,7 +42,7 @@ export default function Home() {
 
   async function fetchStatus() {
     try {
-      const response = await fetch('http://localhost:8000/api/status')
+      const response = await fetch(`${API_URL}/api/status`)
       const data = await response.json()
       setStatus(data)
     } catch (error) {
@@ -61,7 +64,7 @@ export default function Home() {
     setIsLoading(true)
 
     try {
-      const response = await fetch('http://localhost:8000/api/chat', {
+      const response = await fetch(`${API_URL}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: userMessage, history }),
