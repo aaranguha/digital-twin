@@ -10,7 +10,10 @@ app = FastAPI(title="Aaran Digital Twin - Backend")
 # Allows frontend (port 3000) to call backend (port 8000)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "https://digital-twin-indol-ten.vercel.app",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
