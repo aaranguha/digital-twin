@@ -233,6 +233,10 @@ def get_todays_events() -> list[dict]:
 
                 # Check if event has already ended
                 is_past = current_time > end_dt
+
+                # PRIVACY: Skip events after 5 PM (personal time)
+                if start_dt.hour >= 17:
+                    continue
             else:
                 # All-day event
                 start_str = "All day"
