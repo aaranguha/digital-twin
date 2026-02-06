@@ -88,8 +88,8 @@ export default function Home() {
   // ============== SUGGESTED QUESTIONS ==============
   const suggestions = [
     "What's your background?",
-    "What projects have you built?",
-    "Is now a good time to reach you?",
+    "What does your schedule look like today?",
+    "Tell me about the Viven AI pitch deck you made.",
   ]
 
   function handleSuggestionClick(question: string) {
