@@ -118,17 +118,26 @@ def exchange_code_for_tokens(code: str) -> dict:
 
 def get_credentials() -> Credentials | None:
     """
-    Load saved credentials from token.json.
+    Load saved credentials from token.json OR from GOOGLE_TOKEN_JSON env var.
+
+    Priority:
+    1. GOOGLE_TOKEN_JSON environment variable (for deployed environments)
+    2. token.json file (for local development)
 
     Returns:
         Credentials object if tokens exist and are valid, None otherwise
     """
-    if not TOKEN_PATH.exists():
-        return None
-
     import json
-    with open(TOKEN_PATH, "r") as f:
-        token_data = json.load(f)
+
+    # Check environment variable first (for Render deployment)
+    token_json_env = os.getenv("GOOGLE_TOKEN_JSON")
+    if token_json_env:
+        token_data = json.loads(token_json_env)
+    elif TOKEN_PATH.exists():
+        with open(TOKEN_PATH, "r") as f:
+            token_data = json.load(f)
+    else:
+        return None
 
     # Create Credentials object from saved data
     credentials = Credentials(
