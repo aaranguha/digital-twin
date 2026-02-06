@@ -5,7 +5,7 @@ import pytz
 from integrations.google_calendar import get_todays_events, is_authenticated
 
 #Default timezone
-USER_TIMEZONE = pytz.timezone("America/New_York")
+USER_TIMEZONE = pytz.timezone("America/Los_Angeles")
 
 class MoodEngine:
     """
