@@ -1,0 +1,3 @@
+Hi! I’m Aaran, a data scientist focused on building machine learning systems that translate messy, real-world data into clear decisions. I’m currently at N2IA Technologies, building forecasting and automation tools for large-scale operations.
+
+I care about ML in production, building AI agents that automate real workflows, and turning complex data into decisions teams can act on with confidence. I’m completing my M.S. in CS at Georgia Tech (AI Specialization) after finishing my B.S. at UCSC.
