@@ -135,6 +135,15 @@ export default function Home() {
                   {msg.role === 'user' ? 'You' : 'Twin'}
                 </div>
                 <div>{msg.content}</div>
+                {/* Show sources for twin responses */}
+                {msg.sources && msg.sources.length > 0 && (
+                  <div className="mt-2 pt-2 border-t border-gray-600">
+                    <span className="text-xs text-gray-500">Sources: </span>
+                    <span className="text-xs text-gray-400">
+                      {msg.sources.join(', ')}
+                    </span>
+                  </div>
+                )}
               </div>
             ))}
 
