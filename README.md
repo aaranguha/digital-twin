@@ -8,7 +8,7 @@ A personal AI assistant that answers questions as me. My twin is powered by RAG 
 
 ## Tech Stack
 
-- **Frontend:** Next.js, React, TypeScript, Tailwind CSS
+- **Frontend:** Next.js (React)
 - **Backend:** FastAPI, Python, Pydantic
 - **Vector DB:** ChromaDB with OpenAI Embeddings
 - **LLM:** GPT-4o-mini
