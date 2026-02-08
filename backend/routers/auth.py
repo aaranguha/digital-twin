@@ -33,9 +33,6 @@ def callback(code: str):
     """
     Handle the OAuth callback from Google.
 
-    After user grants permission, Google redirects here with:
-    /auth/callback?code=ABC123XYZ
-
     Args:
         code: Authorization code from Google (FastAPI extracts this from URL)
 
@@ -47,8 +44,6 @@ def callback(code: str):
     # Exchange the code for tokens
     tokens = exchange_code_for_tokens(code)
 
-    # For now, just return success message
-    # In production, you'd redirect to the frontend
     return {
         "status": "success",
         "message": "Google Calendar connected! You can close this window.",

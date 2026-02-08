@@ -30,15 +30,6 @@ TOKEN_PATH = Path(__file__).resolve().parents[2] / "token.json"
 
 #OAuth Flow:
 def get_oauth_flow() -> Flow:
-    """
-    Create an OAuth flow object for the Google login process.
-
-    Flow = the object that handles the OAuth dance:
-    1. Generate the Google login URL
-    2. Exchange the callback code for tokens
-    """
-    # Client config contains our app's credentials
-    # This is what we got from Google Cloud Console
     client_config = {
         "web": {
             "client_id": GOOGLE_CLIENT_ID,
@@ -60,17 +51,7 @@ def get_oauth_flow() -> Flow:
 
 
 def get_authorization_url() -> str:
-    """
-    Generate the URL where users go to log in with Google.
-
-    Returns something like:
-    https://accounts.google.com/o/oauth2/auth?client_id=...&scope=...
-    """
     flow = get_oauth_flow()
-
-    # Generate the authorization URL
-    # access_type='offline' = we get a refresh_token (so we can refresh without re-login)
-    # prompt='consent' = always show the consent screen (ensures we get refresh_token)
     auth_url, _ = flow.authorization_url(
         access_type='offline',
         prompt='consent'
@@ -82,7 +63,7 @@ def get_authorization_url() -> str:
 def exchange_code_for_tokens(code: str) -> dict:
     """
     After user logs in, Google redirects back with a 'code'.
-    We exchange this code for actual tokens.
+    Exchange this code for actual tokens.
 
     Args:
         code: The authorization code from Google's callback
@@ -94,14 +75,12 @@ def exchange_code_for_tokens(code: str) -> dict:
 
     # Exchange the code for tokens
     flow.fetch_token(code=code)
-
-    # Get the credentials object
     credentials = flow.credentials
 
     # Save tokens to file so we don't need to re-login every time
     token_data = {
-        "token": credentials.token,                    # Access token (expires in ~1 hour)
-        "refresh_token": credentials.refresh_token,    # Refresh token (long-lived)
+        "token": credentials.token,                    
+        "refresh_token": credentials.refresh_token,    
         "token_uri": credentials.token_uri,
         "client_id": credentials.client_id,
         "client_secret": credentials.client_secret,
@@ -119,17 +98,12 @@ def exchange_code_for_tokens(code: str) -> dict:
 def get_credentials() -> Credentials | None:
     """
     Load saved credentials from token.json OR from GOOGLE_TOKEN_JSON env var.
-
-    Priority:
-    1. GOOGLE_TOKEN_JSON environment variable (for deployed environments)
-    2. token.json file (for local development)
-
     Returns:
         Credentials object if tokens exist and are valid, None otherwise
     """
     import json
 
-    # Check environment variable first (for Render deployment)
+    # Check environment variable first (Render deployment)
     token_json_env = os.getenv("GOOGLE_TOKEN_JSON")
     if token_json_env:
         token_data = json.loads(token_json_env)
@@ -177,7 +151,6 @@ def get_todays_events() -> list[dict]:
         return []  # Not authenticated yet
 
     # Build the Google Calendar API service
-    # 'calendar' = the API name, 'v3' = API version
     service = build("calendar", "v3", credentials=credentials)
 
     # Get today's date range (midnight to midnight in LOCAL time)
@@ -185,7 +158,6 @@ def get_todays_events() -> list[dict]:
     start_of_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
     end_of_day = start_of_day + timedelta(days=1)
 
-    # Format as RFC3339 with timezone offset
     # Google Calendar API needs timezone info to filter correctly
     import time
     offset = time.timezone if time.daylight == 0 else time.altzone

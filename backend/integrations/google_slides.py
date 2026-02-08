@@ -6,8 +6,7 @@ from googleapiclient.discovery import build
 # Import credentials function from our calendar module (reuse the same auth)
 from integrations.google_calendar import get_credentials, is_authenticated
 
-# Your "Viven AI" folder ID from Google Drive
-# This scopes the integration to only look at files in this folder
+# "Viven AI" folder ID from Google Drive (only look at this folder)
 VIVEN_FOLDER_ID = "1aTjCY_oZDNu-lJF4GUYuGT8529rf-O5E"
 
 
@@ -40,7 +39,6 @@ def list_presentations() -> list[dict]:
     credentials = get_credentials()
 
     # Build Google Drive API service
-    # 'drive' = API name, 'v3' = version
     drive_service = build("drive", "v3", credentials=credentials)
 
     # Query for Google Slides files in our specific folder
