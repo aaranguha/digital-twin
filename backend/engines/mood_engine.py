@@ -13,7 +13,7 @@ class MoodEngine:
 
     Outputs:
         - availability: "busy" | "focused" | "open" | "winding_down"
-        - energy_estimate: "high" | "medium" | "low"
+        - energy_estimate: "high" | "medium" | "lower"
         - best_contact_method: "async" | "quick_sync" | "deep_discussion"
         - suggested_wait_time: "now" | "30min" | "end_of_day" | "tomorrow"
         - context_summary: Human-readable explanation
@@ -106,7 +106,7 @@ class MoodEngine:
             summary += " Afternoon work mode."
         elif current_hour >= 16:
             availability = "winding_down"
-            energy = "low"
+            energy = "lower"
             summary = "End of workday. Best to reach out tomorrow morning."
         else:
             energy = "medium"
