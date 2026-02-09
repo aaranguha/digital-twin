@@ -64,8 +64,8 @@ class MoodEngine:
         #Check if in meeting
         in_meeting = any(event.get("is_now", False) for event in events)
 
-        #Count remaining meetings 
-        meetings_remaining = sum(1 for event in events if not event.get("is_past", False))
+        #Count remaining meetings (excluding current meeting)
+        meetings_remaining = sum(1 for event in events if not event.get("is_past", False) and not event.get("is_now", False))
 
         #Availability logic
         if in_meeting:
