@@ -3,7 +3,11 @@
 import os
 from datetime import datetime, timedelta
 from pathlib import Path
+import pytz
 from google.oauth2.credentials import Credentials
+
+# User's timezone (hardcoded for MVP)
+USER_TIMEZONE = pytz.timezone("America/Los_Angeles")
 from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from dotenv import load_dotenv
@@ -153,19 +157,14 @@ def get_todays_events() -> list[dict]:
     # Build the Google Calendar API service
     service = build("calendar", "v3", credentials=credentials)
 
-    # Get today's date range (midnight to midnight in LOCAL time)
-    now = datetime.now()
+    # Get today's date range (midnight to midnight in USER's timezone)
+    now = datetime.now(USER_TIMEZONE)
     start_of_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
     end_of_day = start_of_day + timedelta(days=1)
 
-    # Google Calendar API needs timezone info to filter correctly
-    import time
-    offset = time.timezone if time.daylight == 0 else time.altzone
-    offset_hours = -offset // 3600
-    offset_str = f"{offset_hours:+03d}:00"
-
-    time_min = start_of_day.isoformat() + offset_str
-    time_max = end_of_day.isoformat() + offset_str
+    # Google Calendar API needs RFC3339 format with timezone
+    time_min = start_of_day.isoformat()
+    time_max = end_of_day.isoformat()
 
     # Call the Calendar API
     events_result = service.events().list(
